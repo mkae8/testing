@@ -1,9 +1,10 @@
-from fastapi import FastAPI 
+from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from database import engine, Base
 from dotenv import load_dotenv
 from models.userModels import User
+from aws import AWS_Cognito, get_aws_cognito, SignUpModel
 
 load_dotenv()
 app = FastAPI()
@@ -70,3 +71,7 @@ def delete_user(user_id:int):
                 session.rollback()
                 print(exc)
                 return {"error_message": "Delete execution error"}
+        
+@app.post("/sign_up")
+def sign_up(user: SignUpModel, cognito: AWS_Cognito = Depends(get_aws_cognito)):
+     return cognito.sign_up(user)
