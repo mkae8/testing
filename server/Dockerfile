@@ -1,7 +1,6 @@
-
 FROM python:3.13
 
-COPY ./server /app
+COPY ./app /app
 COPY requirements.txt /app
 
 WORKDIR /app
