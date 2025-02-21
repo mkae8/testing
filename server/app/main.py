@@ -5,10 +5,23 @@ from database import engine, Base
 from dotenv import load_dotenv
 from models.userModels import User
 from aws import AWS_Cognito, get_aws_cognito, SignUpModel
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 app = FastAPI()
 
+origins = [
+    "http://localhost",
+    "http://localhost:4000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 Base.metadata.create_all(bind=engine)
 
